@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import 'animate.css';
 import './App.css'
 import cat from './assets/cat.png'
+import axios from 'axios';
+import { retrieveLaunchParams } from '@tma.js/sdk';
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./store/reducers/userSlice";
 
 import { atom, useAtom } from 'jotai';
 
@@ -22,7 +26,8 @@ import DesktopBlock from './pages/Desktop';
 export const appStateAtom = atom('exchange');
 export const popupStateAtom = atom(1);
 function App() {
- 
+  const dispatch = useDispatch();
+
 
   const [appState,setAppState] = useAtom(appStateAtom);
   useEffect(() => {
@@ -39,7 +44,79 @@ useEffect(()=>{
 setTimeout(()=>{setLoading(false)},1500);
 
 },[]);
+useEffect(()=>{
+  let hasFetchedReferralCode = false;
+  let hasSavedUserId = false;
 
+    const fetchData = async () => {
+     
+      const { initData } = retrieveLaunchParams(); // Предполагается, что у вас есть эта функция
+      if (initData && initData.user) {
+        const user = initData.user;
+        // const username = user.username;
+        let username = user.username || `guest_${user.id}`; // Используем guest_{user.id} если нет username
+        let referralCode;
+        let clickId;
+       const userId = user.id;
+       if (!hasFetchedReferralCode) {
+        const response = await axios.get(`https://coinfarm.club/api1/getReferralCode?user_id=${userId}`);
+        const data = response.data;
+        referralCode = data.referral_code;
+        clickId = data.click_id;
+        // Если есть clickId, отправляем POST запрос на указанный URL
+        if (clickId) {
+            const postUrl = `https://binomtracky.pro/click.php?event8=1&cnv_status=bot&cnv_id=${clickId}`;
+            try {
+                await axios.post(postUrl);
+            } catch (error) {
+                console.error("Error sending click ID:", error);
+            }
+        }
+        hasFetchedReferralCode = true;
+       }
+        if (username) {
+          if (!hasSavedUserId) {
+
+          await axios.post('https://coinfarm.club/api1/saveUserId', {
+            username: username,
+            user_id: userId
+          });
+        }
+          try {
+            const response = await axios.post("https://coinfarm.club/api/user", {
+              username: username,
+              coins: 0,
+              totalEarnings: 0,
+              incomeMultiplier: 1,
+              coinsPerHour: 1000,
+              xp: 1000,
+              level: 0,
+              referralCode: referralCode,
+          });
+          
+          if (response.status === 409) {
+              const userData = response.data;
+              dispatch(setUser(userData));
+          } else {
+              const newUser = response.data;
+              dispatch(setUser(newUser));
+          }
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        }
+
+        if (user.photoUrl) {
+          // setImgSrc(user.photoUrl);
+        } else {
+        }
+      }
+    };
+
+    fetchData(); // Initial fetch on component mount
+setTimeout(()=>{setLoading(false)},1500);
+
+},[]);
 return (
     <>
     {isMobile ?
