@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect  } from "react";
 import Coin from "../Coin";
 import cat from './../assets/cat.png'
 import { appStateAtom } from "../App";
