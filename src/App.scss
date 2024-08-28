@@ -907,25 +907,7 @@ button.dark-btn {
     justify-content: space-between;
   }
 }
-.clicker_swimmer {
-  position: absolute;
-  z-index: 10;
-  user-select: none;
-  touch-action: none;
 
-  animation: swimmer_anim 1.15s cubic-bezier(0, 0.65, 1, 1.02);
-}
-
-@keyframes swimmer_anim {
-  from {
-      transform: translateY(0);
-      opacity: 1;
-  }
-  to {
-      transform: translateY(-80px);
-      opacity: 0;
-  }
-}
 .langMenu {
   display: flex;
   overflow: hidden;
@@ -1019,6 +1001,25 @@ button.dark-btn {
     }
   }
   .circle {
+    .clicker_swimmer {
+      position: absolute;
+      z-index: 10;
+      user-select: none;
+      touch-action: none;
+    
+      animation: swimmer_anim 1.15s cubic-bezier(0, 0.65, 1, 1.02);
+    }
+    
+    @keyframes swimmer_anim {
+      from {
+          transform: translateY(0);
+          opacity: 1;
+      }
+      to {
+          transform: translateY(-80px);
+          opacity: 0;
+      }
+    }
     .circle-feedback {
       z-index: 100;
       pointer-events: none;
