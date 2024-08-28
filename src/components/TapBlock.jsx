@@ -140,15 +140,15 @@ useEffect(() => {
 // }} 
 className="circle animate__animated animate__zoomIn animate__faster" >
   <div className="circle-feedback"
-  style={{position: 'absolute', top: 0, left: 0}}
+  style={{position: 'absolute'}}
   >
-    
+          {swimmers.map((v, i) => 
+  <ClickerSwimmer key={i} swimmers={swimmers} setSwimmers={setSwimmers} {...v} />
+  )}
   </div>
     <div className="inner"
     >
-      {swimmers.map((v, i) => 
-  <ClickerSwimmer key={i} swimmers={swimmers} setSwimmers={setSwimmers} {...v} />
-  )}
+
         <img src={cat} style={{userSelect: 'none'}} alt="" />
     </div>
 </div>
