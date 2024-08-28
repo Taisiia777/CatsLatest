@@ -100,7 +100,7 @@ const taps = async (e, taps) => {
 
       setTapsCount(tapsCount => tapsCount + taps);
       setCoins(prevCoins => prevCoins + (tapsPerClick * taps));
-      alert(coins)      
+      console.log(coins)
       createSwimmer(e, tapsPerClick);
   }
 };
