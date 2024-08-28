@@ -1002,7 +1002,7 @@ button.dark-btn {
   }
   .circle {
     .clicker_swimmer {
-      position: absolute;
+      position: absolute !important;
       z-index: 10;
       user-select: none;
       touch-action: none;
