@@ -17,7 +17,7 @@ const ClickerSwimmer = ({ x, y, taps, swimmers, setSwimmers }) => {
 
     if (!visible) return null;
     return (
-        <h1 className='clicker_swimmer' style={{ top: y - 21, left: x - 30 }}>+{taps}</h1>
+        <h1 className='clicker_swimmer' style={{display: "flex", position:"absolute", top: y - 21, left: x - 30 }}>+{taps}</h1>
     )
 };
 
