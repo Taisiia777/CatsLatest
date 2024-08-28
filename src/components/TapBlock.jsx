@@ -62,18 +62,19 @@ const taps = async (e, taps) => {
     const newEnergy = energy_count - energyFormula * taps;
     setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
     if (taps !== 0) {
-        const unix = Math.floor(Date.now() / 1000)
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-        setTapsCount(tapsCount => tapsCount + taps);
-        setCoins(coins => coins + (tapsPerClick * taps))
-        const coinsResponse = await axios.patch('https://dc94-95-161-221-131.ngrok-free.app/api/user/${user.id}/earn/1', {
-          headers: {
-            'ngrok-skip-browser-warning': 'true' // Добавляем заголовок для обхода предупреждения ngrok
-          }
-        });
-        console.log(coinsResponse)
-        createSwimmer(e, tapsPerClick);
-    }
+      const unix = Math.floor(Date.now() / 1000)
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      setTapsCount(tapsCount => tapsCount + taps);
+      setCoins(coins => coins + (tapsPerClick * taps))
+      const coinsResponse = await axios.patch(`https://dc94-95-161-221-131.ngrok-free.app/api/user/${user.id}/earn/1`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true' // Добавляем заголовок для обхода предупреждения ngrok
+        }
+      });
+      console.log(coinsResponse)
+      createSwimmer(e, tapsPerClick);
+  }
+
 
 };
 
@@ -127,16 +128,31 @@ useEffect(() => {
     </button>
 </div>
 }
-<div className="circle"
+<div 
  onClick={handleClick}
  onTouchStart={(e) => setTouch(e.touches)}
  onTouchEnd={handleClick}
->
-{swimmers.map((v, i) => 
+// onClick={(e)=>{
+//   console.log(e);
+//   console.log(e.target.getBoundingClientRect());
+  
+//   if (!document.querySelector('.circle-feedback'))return;
+// var child = document.createElement('nav');
+// child.style.top = e.clientY-e.target.getBoundingClientRect().y + 'px';
+// child.style.left = e.clientX-e.target.getBoundingClientRect().x + 'px';
+// child.textContent = '+1'; 
+// child.style.position = 'absolute';
+//   document.querySelector('.circle-feedback').appendChild(child);
+//  setTimeout(()=>{ child.remove() }, 1000);
+// }} 
+className="circle" >
+      {swimmers.map((v, i) => 
   <ClickerSwimmer key={i} swimmers={swimmers} setSwimmers={setSwimmers} {...v} />
   )}
-    <div className="inner">
-        <img src={cat} alt="" />
+    <div className="inner"
+    >
+
+        <img src={cat} style={{userSelect: 'none'}} alt="" />
     </div>
 </div>
 <div className="energy-section">
