@@ -1,27 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Coin from "../Coin";
+import {  useSelector } from "react-redux";
 
 import cat1 from '../assets/cat1.png'
-import axios from "axios";
 import { appStateAtom, popupStateAtom } from "../App";
 import { useAtom } from "jotai";
 export default function MineBlock() {
   const [tab, setTab] = useState(1);
   const [cardsTab, setCardsTab] = useState(1);
   const [popupState, setPopupState] = useAtom(popupStateAtom);
-  const [coins, setCoins] = useState([]);
-useEffect(()=>{
-  const fetchCoins = async () => {
-    try {
-      const response = await fetch("https://85ef-95-161-221-131.ngrok-free.app/api/coin");
-      const data = await response.json();
-      setCoins(data);
-    } catch (error) {
-      console.error("Error fetching boosters:", error);
-    }
-  };
-  fetchCoins()
-},[]);
+  const coins = useSelector((state) => state.user.coins);
+
   return (
     <div className="MineBlock BottomBlock" onTouchMove={(e)=>{
       e.stopPropagation();

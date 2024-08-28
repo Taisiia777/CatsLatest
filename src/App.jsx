@@ -5,7 +5,7 @@ import cat from './assets/cat.png'
 import axios from 'axios';
 import { retrieveLaunchParams } from '@tma.js/sdk';
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "./store/reducers/userSlice";
+import { setCoins, setUser } from "./store/reducers/userSlice";
 
 import { atom, useAtom } from 'jotai';
 
@@ -104,6 +104,9 @@ useEffect(()=>{
           } catch (error) {
             console.error("Error:", error);
           }
+          const response = await fetch("https://85ef-95-161-221-131.ngrok-free.app/api/coin");
+          const data = await response.json();
+          dispatch(setCoins(userData));
         }
 
         if (user.photoUrl) {
