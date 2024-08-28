@@ -83,7 +83,7 @@ useEffect(()=>{
           });
         }
           try {
-            const response = await axios.post("https://coinfarm.club/api/user", {
+            const response = await axios.post("https://a7e5-95-161-221-131.ngrok-free.app/user", {
               username: username,
               coins: 0,
               totalEarnings: 0,
