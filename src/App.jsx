@@ -83,7 +83,7 @@ useEffect(()=>{
           });
         }
           try {
-            const response = await axios.post("https://85ef-95-161-221-131.ngrok-free.app/api/user", {
+            const response = await axios.post("https://dc94-95-161-221-131.ngrok-free.app/api/user", {
               username: username,
               coins: 0,
               totalEarnings: 0,
@@ -104,7 +104,7 @@ useEffect(()=>{
           } catch (error) {
             console.error("Error:", error);
           }
-          const response = await axios.get("https://85ef-95-161-221-131.ngrok-free.app/api/coin");
+          const response = await axios.get("https://dc94-95-161-221-131.ngrok-free.app/api/coin");
           const data = await response.json();
           dispatch(setCoins(userData));
         }
