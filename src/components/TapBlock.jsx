@@ -10,7 +10,7 @@ import icon3 from '../assets/icon3.png'
 import ClickerSwimmer from "./ClickerSwimmer";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/reducers/userSlice";
-
+import axios from "axios";
 export default function TapBlock () {
   const [appState,setAppState] = useAtom(appStateAtom);
   const [selectedButton,setSelectedButton] = useState(false);
@@ -66,6 +66,12 @@ const taps = async (e, taps) => {
         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
         setTapsCount(tapsCount => tapsCount + taps);
         setCoins(coins => coins + (tapsPerClick * taps))
+        const coinsResponse = await axios.patch('https://dc94-95-161-221-131.ngrok-free.app/api/user/${user.id}/earn/1', {
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // Добавляем заголовок для обхода предупреждения ngrok
+          }
+        });
+        console.log(coinsResponse)
         createSwimmer(e, tapsPerClick);
     }
 
