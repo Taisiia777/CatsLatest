@@ -143,9 +143,6 @@ child.style.position = 'absolute';
     
   </div>
     <div className="inner"
-     onClick={handleClick}
-     onTouchStart={(e) => setTouch(e.touches)}
-     onTouchEnd={handleClick}
     >
       {swimmers.map((v, i) => 
   <ClickerSwimmer key={i} swimmers={swimmers} setSwimmers={setSwimmers} {...v} />
