@@ -104,7 +104,7 @@ useEffect(()=>{
           } catch (error) {
             console.error("Error:", error);
           }
-          const response = await fetch("https://85ef-95-161-221-131.ngrok-free.app/api/coin");
+          const response = await axios.get("https://85ef-95-161-221-131.ngrok-free.app/api/coin");
           const data = await response.json();
           dispatch(setCoins(userData));
         }
