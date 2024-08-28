@@ -121,31 +121,16 @@ useEffect(() => {
     </button>
 </div>
 }
-<div 
+<div className="circle"
  onClick={handleClick}
  onTouchStart={(e) => setTouch(e.touches)}
  onTouchEnd={handleClick}
-// onClick={(e)=>{
-//   console.log(e);
-//   console.log(e.target.getBoundingClientRect());
-  
-//   if (!document.querySelector('.circle-feedback'))return;
-// var child = document.createElement('nav');
-// child.style.top = e.clientY-e.target.getBoundingClientRect().y + 'px';
-// child.style.left = e.clientX-e.target.getBoundingClientRect().x + 'px';
-// child.textContent = '+1'; 
-// child.style.position = 'absolute';
-//   document.querySelector('.circle-feedback').appendChild(child);
-//  setTimeout(()=>{ child.remove() }, 1000);
-// }} 
-className="circle animate__animated animate__zoomIn animate__faster" >
-      {swimmers.map((v, i) => 
+>
+{swimmers.map((v, i) => 
   <ClickerSwimmer key={i} swimmers={swimmers} setSwimmers={setSwimmers} {...v} />
   )}
-    <div className="inner"
-    >
-
-        <img src={cat} style={{userSelect: 'none'}} alt="" />
+    <div className="inner">
+        <img src={cat} alt="" />
     </div>
 </div>
 <div className="energy-section">
