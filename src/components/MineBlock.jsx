@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Coin from "../Coin";
 
 import cat1 from '../assets/cat1.png'
-
+import axios from "axios";
 import { appStateAtom, popupStateAtom } from "../App";
 import { useAtom } from "jotai";
 export default function MineBlock() {
   const [tab, setTab] = useState(1);
   const [cardsTab, setCardsTab] = useState(1);
   const [popupState, setPopupState] = useAtom(popupStateAtom);
+  const [coins, setCoins] = useState([]);
+useEffect(()=>{
+  const fetchCoins = async () => {
+    try {
+      const response = await fetch("https://85ef-95-161-221-131.ngrok-free.app/api/coin");
+      const data = await response.json();
+      setCoins(data);
+    } catch (error) {
+      console.error("Error fetching boosters:", error);
+    }
+  };
+  fetchCoins()
+},[]);
   return (
     <div className="MineBlock BottomBlock" onTouchMove={(e)=>{
       e.stopPropagation();
@@ -2986,6 +2999,53 @@ export default function MineBlock() {
           </div>
         </div>
         {tab <= 3 ? (
+        <div className="adv_list">
+          {coins.map((coin, index) => (
+            <div
+              key={coin.id}
+              onClick={() => {
+                setPopupState(2);
+              }}
+            >
+              <div>
+                <svg
+                  width={36}
+                  height={37}
+                  viewBox="0 0 36 37"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M35.9876 18.5075V18.4377C35.9522 8.56067 27.877 0.5 17.9938 0.5C8.11056 0.5 0 8.56067 0 18.5075C0 28.4555 8.07386 36.5 17.9938 36.5C22.5457 36.503 26.9236 34.7769 30.2166 31.6805C30.5409 31.3886 30.7342 30.9817 30.7541 30.5493C30.7739 30.1169 30.6185 29.6945 30.3222 29.3749C30.0259 29.0554 29.6129 28.8649 29.174 28.8454C28.7352 28.8258 28.3064 28.9789 27.9821 29.2708L27.9466 29.3057C26.5258 30.6365 24.8467 31.6707 23.01 32.3462C21.1734 33.0217 19.2172 33.3246 17.2588 33.2367C15.3005 33.1488 13.3803 32.6719 11.6136 31.8347C9.84697 30.9974 8.27025 29.8171 6.97812 28.3645L14.6648 16.2199V21.8397C14.6648 24.5249 15.7276 25.3988 16.6209 25.6432C17.5142 25.8875 18.8542 25.7105 20.3055 23.4429L24.5227 16.6961C24.6353 16.4992 24.7657 16.3122 24.9099 16.1364V19.5584C24.9099 22.0703 25.9373 24.0948 27.7075 25.071C28.5246 25.5093 29.447 25.7214 30.3767 25.6848C31.3064 25.6481 32.2086 25.3641 32.9876 24.8628C35.0323 23.5551 36.1306 21.265 35.9876 18.5075ZM31.3111 22.0417C31.0271 22.2344 30.696 22.3488 30.3521 22.3732C30.0082 22.3975 29.6639 22.3308 29.3549 22.18C28.6463 21.7624 28.2199 20.8212 28.2199 19.5297V15.5742C28.2199 13.6918 27.4759 12.3292 26.2018 11.9827C24.0394 11.3394 22.4122 13.971 21.8087 14.9484L17.9938 20.9845V13.5521C17.9584 11.843 17.3902 10.8308 16.3274 10.5154C15.6188 10.3072 14.556 10.4132 13.5298 11.949L4.99286 25.4188C3.85716 23.2866 3.26199 20.9154 3.25814 18.5075C3.25814 10.3758 9.88071 3.77987 17.9938 3.77987C26.1069 3.77987 32.7295 10.3758 32.7295 18.5075V18.5785C32.8142 20.1468 32.303 21.4059 31.3123 22.0317L31.3111 22.0417Z"
+                    fill="white"
+                  />
+                </svg>
+
+                <div>
+                  <p>{coin.name}</p>
+                  <span>Прибыль в час</span>
+                  <h6>
+                    {" "}
+                    <Coin width={12} /> +{coin.hourlyIncome.toLocaleString()}{" "}
+                  </h6>
+                </div>
+              </div>
+              <section>
+                <p>lvl 1</p>
+                <div>
+                  <Coin width={20} />
+                  <p>{coin.cost.toLocaleString()}</p>
+                </div>
+              </section>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          {/* Other rendering logic */}
+        </>
+      )}
+        {/* {tab <= 3 ? (
           <div className="adv_list">
             <div
               onClick={() => {
@@ -3347,7 +3407,7 @@ export default function MineBlock() {
               </div>
             </div>
           </>
-        )}
+        )} */}
       </div>
     </div>
   );
