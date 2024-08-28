@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../store/reducers/userSlice";
 
 export default function TapBlock () {
+  const [appState,setAppState] = useAtom(appStateAtom);
+  const [selectedButton,setSelectedButton] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const [tapsCount, setTapsCount] = useState(2000);
@@ -23,9 +25,6 @@ export default function TapBlock () {
   const [swimmers, setSwimmers] = useState([]);
   const [tapsPerClick, setTapsPerClick] = useState(1);
   const [energy_count, setEnergy_count] = useState(2000);
-  const [appState,setAppState] = useAtom(appStateAtom);
-  const [selectedButton,setSelectedButton] = useState(false);
-  
   const createSwimmer = (e, taps) => {
     const parent = e.currentTarget.getBoundingClientRect();
     let swms = [];
@@ -52,57 +51,31 @@ export default function TapBlock () {
     setSwimmers([...swimmers, ...swms])
 }
 
-// const taps = async (e, taps) => {
-//     let energyFormula = Math.floor(tapsPerClick / 100);
-//     energyFormula = (energyFormula === 0 ? 1 : 1 + 0.1 * energyFormula);
+const taps = async (e, taps) => {
+    let energyFormula = Math.floor(tapsPerClick / 100);
+    energyFormula = (energyFormula === 0 ? 1 : 1 + 0.1 * energyFormula);
 
-//     if (energy_count < energyFormula * taps) {
-//         taps = Math.floor(energy_count / energyFormula)
-//     }
+    if (energy_count < energyFormula * taps) {
+        taps = Math.floor(energy_count / energyFormula)
+    }
 
-//     const newEnergy = energy_count - energyFormula * taps;
-//     setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
+    const newEnergy = energy_count - energyFormula * taps;
+    setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
 
-//     if (taps !== 0) {
-//         const unix = Math.floor(Date.now() / 1000)
-//         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    if (taps !== 0) {
+        const unix = Math.floor(Date.now() / 1000)
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
-//         setTapsCount(tapsCount => tapsCount + taps);
-//         setCoins(coins => coins + (tapsPerClick * taps))
-//         createSwimmer(e, tapsPerClick);
-//     }
+        setTapsCount(tapsCount => tapsCount + taps);
+        setCoins(coins => coins + (tapsPerClick * taps))
+        createSwimmer(e, tapsPerClick);
+    }
 
-// };
-
-// const handleClick = (e) => {
-//     const event = Object.assign({}, e);
-//     taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
-
-// };
-const handleClick = (e) => {
-  const event = Object.assign({}, e);
-  taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
 };
 
-const taps = async (e, taps) => {
-  let energyFormula = Math.floor(tapsPerClick / 100);
-  energyFormula = (energyFormula === 0 ? 1 : 1 + 0.1 * energyFormula);
-
-  if (energy_count < energyFormula * taps) {
-      taps = Math.floor(energy_count / energyFormula);
-  }
-
-  const newEnergy = energy_count - energyFormula * taps;
-  setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
-
-  // if (taps !== 0) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-
-      setTapsCount(tapsCount => tapsCount + taps);
-      setCoins(prevCoins => prevCoins + (tapsPerClick * taps));
-      console.log(coins)
-      createSwimmer(e, tapsPerClick);
-  // }
+const handleClick = (e) => {
+    const event = Object.assign({}, e);
+    taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
 };
 useEffect(() => {
   let energyFormula = Math.floor(tapsPerClick / 100);
