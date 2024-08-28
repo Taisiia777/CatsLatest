@@ -75,6 +75,7 @@ const taps = async (e, taps) => {
 
 const handleClick = (e) => {
     const event = Object.assign({}, e);
+    alert("0")
     taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
 };
 useEffect(() => {
