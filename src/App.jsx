@@ -101,12 +101,12 @@ useEffect(()=>{
               const newUser = response.data;
               dispatch(setUser(newUser));
           }
+          const response1 = await axios.get("https://dc94-95-161-221-131.ngrok-free.app/api/coin");
+          dispatch(setCoins(response1.data));
           } catch (error) {
             console.error("Error:", error);
           }
-          const response = await axios.get("https://dc94-95-161-221-131.ngrok-free.app/api/coin");
-          const data = await response.json();
-          dispatch(setCoins(userData));
+         
         }
 
         if (user.photoUrl) {
