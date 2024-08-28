@@ -51,31 +51,56 @@ export default function TapBlock () {
     setSwimmers([...swimmers, ...swms])
 }
 
-const taps = async (e, taps) => {
-    let energyFormula = Math.floor(tapsPerClick / 100);
-    energyFormula = (energyFormula === 0 ? 1 : 1 + 0.1 * energyFormula);
+// const taps = async (e, taps) => {
+//     let energyFormula = Math.floor(tapsPerClick / 100);
+//     energyFormula = (energyFormula === 0 ? 1 : 1 + 0.1 * energyFormula);
 
-    if (energy_count < energyFormula * taps) {
-        taps = Math.floor(energy_count / energyFormula)
-    }
+//     if (energy_count < energyFormula * taps) {
+//         taps = Math.floor(energy_count / energyFormula)
+//     }
 
-    const newEnergy = energy_count - energyFormula * taps;
-    setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
+//     const newEnergy = energy_count - energyFormula * taps;
+//     setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
 
-    if (taps !== 0) {
-        const unix = Math.floor(Date.now() / 1000)
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+//     if (taps !== 0) {
+//         const unix = Math.floor(Date.now() / 1000)
+//         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
-        setTapsCount(tapsCount => tapsCount + taps);
-        setCoins(coins => coins + (tapsPerClick * taps))
-        createSwimmer(e, tapsPerClick);
-    }
+//         setTapsCount(tapsCount => tapsCount + taps);
+//         setCoins(coins => coins + (tapsPerClick * taps))
+//         createSwimmer(e, tapsPerClick);
+//     }
 
+// };
+
+// const handleClick = (e) => {
+//     const event = Object.assign({}, e);
+//     taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
+
+// };
+const handleClick = (e) => {
+  const event = Object.assign({}, e);
+  taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
 };
 
-const handleClick = (e) => {
-    const event = Object.assign({}, e);
-    taps(event, touch === null ? 1 : Math.ceil(touch.length / 2) || 1);
+const taps = async (e, taps) => {
+  let energyFormula = Math.floor(tapsPerClick / 100);
+  energyFormula = (energyFormula === 0 ? 1 : 1 + 0.1 * energyFormula);
+
+  if (energy_count < energyFormula * taps) {
+      taps = Math.floor(energy_count / energyFormula);
+  }
+
+  const newEnergy = energy_count - energyFormula * taps;
+  setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
+
+  if (taps !== 0) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+
+      setTapsCount(tapsCount => tapsCount + taps);
+      setCoins(prevCoins => prevCoins + (tapsPerClick * taps));
+      createSwimmer(e, tapsPerClick);
+  }
 };
 useEffect(() => {
   let energyFormula = Math.floor(tapsPerClick / 100);
