@@ -95,14 +95,14 @@ const taps = async (e, taps) => {
   const newEnergy = energy_count - energyFormula * taps;
   setEnergy_count(newEnergy <= 0 ? 0 : newEnergy);
 
-  if (taps !== 0) {
+  // if (taps !== 0) {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
       setTapsCount(tapsCount => tapsCount + taps);
       setCoins(prevCoins => prevCoins + (tapsPerClick * taps));
       console.log(coins)
       createSwimmer(e, tapsPerClick);
-  }
+  // }
 };
 useEffect(() => {
   let energyFormula = Math.floor(tapsPerClick / 100);
