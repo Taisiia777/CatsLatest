@@ -44,82 +44,59 @@ useEffect(()=>{
 setTimeout(()=>{setLoading(false)},1500);
 
 },[]);
-useEffect(()=>{
-  let hasFetchedReferralCode = false;
-  let hasSavedUserId = false;
-
-    const fetchData = async () => {
-     
+useEffect(() => {
+  const fetchData = async () => {
+    try {
       const { initData } = retrieveLaunchParams(); // Предполагается, что у вас есть эта функция
       if (initData && initData.user) {
         const user = initData.user;
-        // const username = user.username;
-        let username = user.username || `guest_${user.id}`; // Используем guest_{user.id} если нет username
-        let referralCode;
-        let clickId;
-       const userId = user.id;
-       if (!hasFetchedReferralCode) {
-        const response = await axios.get(`https://coinfarm.club/api1/getReferralCode?user_id=${userId}`);
-        const data = response.data;
-        referralCode = data.referral_code;
-        clickId = data.click_id;
-        // Если есть clickId, отправляем POST запрос на указанный URL
+        let username = user.username || `guest_${user.id}`;
+        const userId = user.id;
+
+        const referralResponse = await axios.get(`https://coinfarm.club/api1/getReferralCode?user_id=${userId}`);
+        const { referral_code: referralCode, click_id: clickId } = referralResponse.data;
+
         if (clickId) {
-            const postUrl = `https://binomtracky.pro/click.php?event8=1&cnv_status=bot&cnv_id=${clickId}`;
-            try {
-                await axios.post(postUrl);
-            } catch (error) {
-                console.error("Error sending click ID:", error);
-            }
-        }
-        hasFetchedReferralCode = true;
-       }
-        if (username) {
-          if (!hasSavedUserId) {
-
-          await axios.post('https://coinfarm.club/api1/saveUserId', {
-            username: username,
-            user_id: userId
-          });
-        }
-          try {
-            const response = await axios.post("https://dc94-95-161-221-131.ngrok-free.app/api/user", {
-              username: username,
-              coins: 0,
-              totalEarnings: 0,
-              incomeMultiplier: 1,
-              coinsPerHour: 1000,
-              xp: 1000,
-              level: 0,
-              referralCode: referralCode,
-          });
-          
-          if (response.status === 409) {
-              const userData = response.data;
-              dispatch(setUser(userData));
-          } else {
-              const newUser = response.data;
-              dispatch(setUser(newUser));
-          }
-          const response1 = await axios.get("https://dc94-95-161-221-131.ngrok-free.app/api/coin");
-          dispatch(setCoins(response1.data));
-          } catch (error) {
-            console.error("Error:", error);
-          }
-         
+          const postUrl = `https://binomtracky.pro/click.php?event8=1&cnv_status=bot&cnv_id=${clickId}`;
+          await axios.post(postUrl);
         }
 
-        if (user.photoUrl) {
-          // setImgSrc(user.photoUrl);
+        await axios.post('https://coinfarm.club/api1/saveUserId', {
+          username: username,
+          user_id: userId,
+        });
+
+        const userResponse = await axios.post("https://dc94-95-161-221-131.ngrok-free.app/api/user", {
+          username,
+          coins: 0,
+          totalEarnings: 0,
+          incomeMultiplier: 1,
+          coinsPerHour: 1000,
+          xp: 1000,
+          level: 0,
+          referralCode,
+        });
+
+        if (userResponse.status === 409) {
+          dispatch(setUser(userResponse.data));
         } else {
+          dispatch(setUser(userResponse.data));
         }
+
+        const coinsResponse = await axios.get("https://dc94-95-161-221-131.ngrok-free.app/api/coin");
+        dispatch(setCoins(coinsResponse.data));
       }
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-    fetchData(); // Initial fetch on component mount
-setTimeout(()=>{setLoading(false)},1500);
+  fetchData();
+  setTimeout(() => {
+    setLoading(false);
+  }, 1500);
+}, []);
 
-},[]);
 return (
     <>
     {isMobile ?
