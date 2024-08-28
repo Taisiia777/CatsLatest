@@ -139,13 +139,9 @@ useEffect(() => {
 //  setTimeout(()=>{ child.remove() }, 1000);
 // }} 
 className="circle animate__animated animate__zoomIn animate__faster" >
-  <div className="circle-feedback"
-  style={{position: 'absolute'}}
-  >
-          {swimmers.map((v, i) => 
+      {swimmers.map((v, i) => 
   <ClickerSwimmer key={i} swimmers={swimmers} setSwimmers={setSwimmers} {...v} />
   )}
-  </div>
     <div className="inner"
     >
 
