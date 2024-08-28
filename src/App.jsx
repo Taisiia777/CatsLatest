@@ -83,7 +83,11 @@ useEffect(() => {
           dispatch(setUser(userResponse.data));
         }
 
-        const coinsResponse = await axios.get("https://dc94-95-161-221-131.ngrok-free.app/api/coin");
+        const coinsResponse = await axios.get('https://dc94-95-161-221-131.ngrok-free.app/api/coin', {
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // Добавляем заголовок для обхода предупреждения ngrok
+          }
+        });
         dispatch(setCoins(coinsResponse.data));
       }
     } catch (error) {
