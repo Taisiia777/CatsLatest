@@ -9,6 +9,7 @@ import icon2 from '../assets/icon2.png'
 import icon3 from '../assets/icon3.png' 
 import ClickerSwimmer from "./ClickerSwimmer";
 import { useDispatch } from "react-redux";
+import { setUser } from "../store/reducers/userSlice";
 
 export default function TapBlock () {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ const taps = async (e, taps) => {
 
       setTapsCount(tapsCount => tapsCount + taps);
       setCoins(prevCoins => prevCoins + (tapsPerClick * taps));
+      dispatch(setUser({...user, coins: prevCoins => prevCoins + (tapsPerClick * taps)}))
       createSwimmer(e, tapsPerClick);
   }
 };
@@ -137,7 +139,7 @@ useEffect(() => {
 </div>
 <div style={{marginBottom: 20}} className="bal">
     <Coin width={38} />
-    <h4>{coins}</h4>
+    <h4>{user.coins}</h4>
 </div>
 {selectedButton == 2 &&
 <div className="daily_code">
